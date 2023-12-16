@@ -1,0 +1,102 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model User {
+  id          Int       @id @default(autoincrement())
+  email       String?   @unique
+  phone       String?   @unique
+  nickname    String
+  avatar      String?
+  description String?   @db.MediumText
+  website     String?
+  createdAt   DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  Token       Token[]
+  Post        Post[]
+  Fav         Fav[]
+  Comment     Comment[]
+  live        Live[]
+  message     Message[]
+}
+
+model Token {
+  id        Int      @id @default(autoincrement())
+  payload   String   @unique
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+}
+
+model Post {
+  id          Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String?
+  description String?   @db.MediumText
+  hashtag     String?
+  image       String?
+  video       String?
+  fileType    String
+  views       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updateAt    DateTime  @updatedAt
+  userId      Int
+  Fav         Fav[]
+  Comment     Comment[]
+}
+
+model Fav {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+  postId    Int
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  post      Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  comment   String   @db.MediumText
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+  postId    Int
+}
+
+model Live {
+  id            Int       @id @default(autoincrement())
+  title         String
+  description   String?   @db.MediumText
+  user          User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  cloudflareId  String
+  cloudflareUrl String
+  cloudflareKey String
+  createdAt     DateTime  @default(now())
+  updateAt      DateTime  @updatedAt
+  userId        Int
+  message       Message[]
+}
+
+model Message {
+  id        Int      @id @default(autoincrement())
+  message   String   @db.MediumText
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  live      Live     @relation(fields: [liveId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+  liveId    Int
+}
