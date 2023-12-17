@@ -1,3 +1,4 @@
+import Error from "@/components/error";
 import { IconPhoto } from "@/components/svg";
 import useFetch from "@/libs/client/useFetch";
 import { useRouter } from "next/router";
@@ -16,7 +17,13 @@ interface test {
 
 export default function Upload() {
   const router = useRouter();
-  const { register, handleSubmit, watch } = useForm<uploadForm>();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+    setError,
+  } = useForm<uploadForm>();
   const [useApi, { loading, data }] = useFetch("/api/upload");
   const onValid = (data: uploadForm) => {
     if (loading) return;
@@ -31,7 +38,25 @@ export default function Upload() {
   const [preview, setPreview] = useState([]);
   useEffect(() => {
     if (uploadFiles && uploadFiles.length > 0) {
-      console.log(uploadFiles);
+      const videoFile = Array.from(uploadFiles).filter(
+        (file) => file.type === "video/mp4"
+      );
+
+      console.log(videoFile);
+
+      if (videoFile.length > 1) {
+        return setError("uploadFiles", {
+          message: "Only one video file can be uploaded",
+        });
+      }
+
+      if (videoFile.length && videoFile.length !== uploadFiles.length) {
+        return setError("uploadFiles", {
+          message: "Video and image cannot be uploaded at the same time",
+        });
+      }
+
+      console.log("done!");
     }
   }, [uploadFiles]);
   return (
@@ -51,6 +76,9 @@ export default function Upload() {
             </label>
           </div>
         </div>
+        {errors?.uploadFiles?.message ? (
+          <Error message={errors?.uploadFiles?.message} />
+        ) : null}
         <div className="my-5">
           <label className="mb-1 block text-sm text-gray-700 font-medium">
             Title
