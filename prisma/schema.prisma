@@ -44,10 +44,10 @@ model Post {
   title       String?
   description String?   @db.MediumText
   hashtag     String?
-  image       String?
-  video       String?
+  url         String    @db.LongText
   fileType    String
   views       Int       @default(0)
+  s3FolderId  String
   createdAt   DateTime  @default(now())
   updateAt    DateTime  @updatedAt
   userId      Int

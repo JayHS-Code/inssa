@@ -5,7 +5,7 @@ import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    body: { description, title },
+    body: { description, title, urls, s3FolderId, fileType },
     session: { user },
   } = req;
 
@@ -13,8 +13,9 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     data: {
       description: description ? description : null,
       title: title ? title : null,
-      image: "",
-      fileType: "png",
+      url: urls,
+      fileType,
+      s3FolderId,
       user: {
         connect: {
           id: user?.id,

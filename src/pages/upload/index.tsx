@@ -4,19 +4,25 @@ import useFetch from "@/libs/client/useFetch";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useS3Upload } from "next-s3-upload";
+import useUser from "@/libs/client/useUser";
 
 interface uploadForm {
   description?: string;
   title?: string;
   uploadFiles: FileList;
+  urls: string;
+  s3FolderId: string;
+  fileType: string;
 }
 
-interface test {
-  [key: string]: string;
-}
+type PreviewType = string;
+type UploadFilesType = "image" | "video";
 
 export default function Upload() {
+  const { user } = useUser();
   const router = useRouter();
+  const { uploadToS3 } = useS3Upload();
   const {
     register,
     handleSubmit,
@@ -25,24 +31,19 @@ export default function Upload() {
     setError,
   } = useForm<uploadForm>();
   const [useApi, { loading, data }] = useFetch("/api/upload");
-  const onValid = (data: uploadForm) => {
-    if (loading) return;
-    useApi(data);
-  };
   useEffect(() => {
     if (data?.ok) {
       router.push(`/`);
     }
   }, [data, router]);
   const uploadFiles = watch("uploadFiles");
-  const [preview, setPreview] = useState([]);
+  const [fileType, setFileType] = useState<UploadFilesType>("image");
+  const [previews, setPreviews] = useState<PreviewType[]>([]);
   useEffect(() => {
     if (uploadFiles && uploadFiles.length > 0) {
       const videoFile = Array.from(uploadFiles).filter(
         (file) => file.type === "video/mp4"
       );
-
-      console.log(videoFile);
 
       if (videoFile.length > 1) {
         return setError("uploadFiles", {
@@ -56,13 +57,49 @@ export default function Upload() {
         });
       }
 
-      console.log("done!");
+      if (videoFile.length) {
+        setFileType("video");
+        console.log(URL.createObjectURL(videoFile[0]));
+      } else {
+        setFileType("image");
+        const arr = Array.from(uploadFiles).map((file) =>
+          URL.createObjectURL(file)
+        );
+        setPreviews([...arr]);
+      }
     }
   }, [uploadFiles]);
+  const onValid = async (form: uploadForm) => {
+    if (loading) return;
+
+    const s3FolderId = new Date().getTime().toString(36);
+
+    const urls = await Promise.all(
+      Array.from(uploadFiles).map(async (file) => {
+        const { url } = await uploadToS3(file, {
+          endpoint: {
+            request: {
+              body: {
+                userId: user?.id,
+                s3FolderId,
+              },
+            },
+          },
+        });
+        return url;
+      })
+    );
+
+    form.s3FolderId = s3FolderId;
+    form.urls = urls.join(" ");
+    form.fileType = fileType;
+
+    useApi(form);
+  };
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
-        <div>
+        {!previews.length ? (
           <div>
             <label className="w-full cursor-pointer text-gray-600 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md hover:text-orange-500 hover:border-orange-500">
               <IconPhoto cls="h-12 w-12" />
@@ -75,7 +112,13 @@ export default function Upload() {
               />
             </label>
           </div>
-        </div>
+        ) : (
+          <div className="flex justify-center">
+            {previews.map((preview, idx) => (
+              <img key={idx} src={preview} />
+            ))}
+          </div>
+        )}
         {errors?.uploadFiles?.message ? (
           <Error message={errors?.uploadFiles?.message} />
         ) : null}
