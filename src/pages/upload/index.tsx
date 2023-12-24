@@ -2,7 +2,7 @@ import Error from "@/components/error";
 import { IconPhoto } from "@/components/svg";
 import useFetch from "@/libs/client/useFetch";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useS3Upload } from "next-s3-upload";
 import useUser from "@/libs/client/useUser";
@@ -26,7 +26,6 @@ export default function Upload() {
   const {
     register,
     handleSubmit,
-    watch,
     formState: { errors },
     setError,
   } = useForm<uploadForm>();
@@ -36,9 +35,10 @@ export default function Upload() {
       router.push(`/`);
     }
   }, [data, router]);
-  const uploadFiles = watch("uploadFiles");
+  const [uploadFiles, setUploadFiles] = useState<File[]>([]);
   const [fileType, setFileType] = useState<UploadFilesType>("image");
   const [previews, setPreviews] = useState<PreviewType[]>([]);
+  const [previewIndex, setPreviewIndex] = useState(0);
   useEffect(() => {
     if (uploadFiles && uploadFiles.length > 0) {
       const videoFile = Array.from(uploadFiles).filter(
@@ -69,10 +69,48 @@ export default function Upload() {
       }
     }
   }, [uploadFiles]);
+  const onPrevClick = (e: React.MouseEvent) => {
+    if (previewIndex === 0) {
+      setPreviewIndex(previews.length - 1);
+    } else {
+      setPreviewIndex((current) => current - 1);
+    }
+  };
+  const onNextClick = (e: React.MouseEvent) => {
+    if (previewIndex === previews.length - 1) {
+      setPreviewIndex(0);
+    } else {
+      setPreviewIndex((current) => current + 1);
+    }
+  };
+  const onAddFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length) {
+      setUploadFiles([...uploadFiles, ...Array.from(files)]);
+    }
+  };
+  const onDelClick = (e: React.MouseEvent) => {
+    previews.splice(previewIndex, 1);
+    setPreviews([...previews]);
+
+    uploadFiles.splice(previewIndex, 1);
+
+    if (uploadFiles.length && previewIndex > uploadFiles.length - 1) {
+      setPreviewIndex(previewIndex - 1);
+    }
+  };
+  const onChangeFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { files } = e.target;
+    if (files && files.length) {
+      setUploadFiles(Array.from(files));
+    }
+  };
   const onValid = async (form: uploadForm) => {
     if (loading) return;
 
     const s3FolderId = new Date().getTime().toString(36);
+
+    console.log(uploadFiles);
 
     const urls = await Promise.all(
       Array.from(uploadFiles).map(async (file) => {
@@ -94,17 +132,19 @@ export default function Upload() {
     form.urls = urls.join(" ");
     form.fileType = fileType;
 
-    useApi(form);
+    //useApi(form);
   };
   return (
     <div>
       <form onSubmit={handleSubmit(onValid)}>
         {!previews.length ? (
           <div>
-            <label className="w-full cursor-pointer text-gray-600 flex items-center justify-center border-2 border-dashed border-gray-300 h-48 rounded-md hover:text-orange-500 hover:border-orange-500">
+            <label className="w-full h-48 cursor-pointer text-gray-600 flex items-center justify-center border-2 border-dashed border-gray-300 rounded-md hover:text-orange-500 hover:border-orange-500">
               <IconPhoto cls="h-12 w-12" />
               <input
-                {...register("uploadFiles")}
+                {...register("uploadFiles", {
+                  onChange: onChangeFiles,
+                })}
                 className="hidden"
                 type="file"
                 accept="image/*, video/*"
@@ -113,10 +153,27 @@ export default function Upload() {
             </label>
           </div>
         ) : (
-          <div className="flex justify-center">
-            {previews.map((preview, idx) => (
-              <img key={idx} src={preview} />
-            ))}
+          <div className="relative flex flex-col justify-center">
+            <img src={previews[previewIndex]} className="object-contain" />
+            <div className="flex gap-5">
+              <div onClick={onPrevClick}>좌</div>
+              <div onClick={onNextClick}>우</div>
+              <div>
+                <label className="w-10 h-10 cursor-pointer rounded-full text-gray-600 flex items-center justify-center border-2 border-dashed border-gray-300 hover:text-orange-500 hover:border-orange-500">
+                  <IconPhoto cls="h-12 w-12" />
+                  <input
+                    {...register("uploadFiles", {
+                      onChange: onAddFiles,
+                    })}
+                    className="hidden"
+                    type="file"
+                    accept="image/*, video/*"
+                    multiple
+                  />
+                </label>
+              </div>
+              <div onClick={onDelClick}>삭제</div>
+            </div>
           </div>
         )}
         {errors?.uploadFiles?.message ? (
