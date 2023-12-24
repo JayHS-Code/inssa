@@ -1,5 +1,11 @@
 import Error from "@/components/error";
-import { IconPhoto } from "@/components/svg";
+import {
+  IconChevronLeft,
+  IconChevronRight,
+  IconPhoto,
+  IconPlusCircle,
+  IconXCircle,
+} from "@/components/svg";
 import useFetch from "@/libs/client/useFetch";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -58,14 +64,15 @@ export default function Upload() {
       }
 
       if (videoFile.length) {
+        const videoUrl = URL.createObjectURL(videoFile[0]);
+        setPreviews([videoUrl]);
         setFileType("video");
-        console.log(URL.createObjectURL(videoFile[0]));
       } else {
-        setFileType("image");
         const arr = Array.from(uploadFiles).map((file) =>
           URL.createObjectURL(file)
         );
         setPreviews([...arr]);
+        setFileType("image");
       }
     }
   }, [uploadFiles]);
@@ -153,27 +160,59 @@ export default function Upload() {
             </label>
           </div>
         ) : (
-          <div className="relative flex flex-col justify-center">
-            <img src={previews[previewIndex]} className="object-contain" />
-            <div className="flex gap-5">
-              <div onClick={onPrevClick}>좌</div>
-              <div onClick={onNextClick}>우</div>
-              <div>
-                <label className="w-10 h-10 cursor-pointer rounded-full text-gray-600 flex items-center justify-center border-2 border-dashed border-gray-300 hover:text-orange-500 hover:border-orange-500">
-                  <IconPhoto cls="h-12 w-12" />
+          <div>
+            {fileType === "image" ? (
+              <div className="relative flex flex-col justify-center bg-black">
+                <img
+                  src={previews[previewIndex]}
+                  className="w-full h-128 object-contain"
+                />
+                {uploadFiles.length > 1 ? (
+                  <div
+                    onClick={onPrevClick}
+                    className="absolute text-white cursor-pointer"
+                  >
+                    <IconChevronLeft />
+                  </div>
+                ) : null}
+                {uploadFiles.length > 1 ? (
+                  <div
+                    onClick={onNextClick}
+                    className="absolute right-0 text-white cursor-pointer"
+                  >
+                    <IconChevronRight />
+                  </div>
+                ) : null}
+                <div
+                  onClick={onDelClick}
+                  className="absolute top-0 right-0 mt-3 mr-3 text-white cursor-pointer"
+                >
+                  <IconXCircle />
+                </div>
+                <label className="absolute bottom-0 right-0 mb-3 mr-3 w-10 h-10 cursor-pointer rounded-full text-gray-600 flex items-center justify-center border-gray-300 hover:text-orange-500 hover:border-orange-500">
+                  <IconPlusCircle cls="h-12 w-12" />
                   <input
                     {...register("uploadFiles", {
                       onChange: onAddFiles,
                     })}
                     className="hidden"
                     type="file"
-                    accept="image/*, video/*"
+                    accept="image/*"
                     multiple
                   />
                 </label>
               </div>
-              <div onClick={onDelClick}>삭제</div>
-            </div>
+            ) : (
+              <div className="relative flex flex-col justify-center bg-black">
+                <video src={previews[0]} controls />
+                <div
+                  onClick={onDelClick}
+                  className="absolute top-0 right-0 mt-3 mr-3 text-white cursor-pointer"
+                >
+                  <IconXCircle />
+                </div>
+              </div>
+            )}
           </div>
         )}
         {errors?.uploadFiles?.message ? (

@@ -6,6 +6,9 @@ export default function BottomMenu() {
       <Link href="/">
         <div>Home</div>
       </Link>
+      <Link href="/video">
+        <div>video</div>
+      </Link>
       <Link href="/live">
         <div>Live</div>
       </Link>
