@@ -5,27 +5,27 @@ import useUser from "@/libs/client/useUser";
 import { Post } from "@prisma/client";
 import useSWR from "swr";
 
-interface PostsType extends Post {
+interface VideoType extends Post {
   user: {
     avatar: string;
     nickname: string;
   };
 }
 
-interface PostsResponse {
+interface VideosResponse {
   ok: boolean;
-  posts: PostsType[];
+  videos: VideoType[];
 }
 
-export default function Home() {
+export default function Video() {
   useUser();
-  const { data } = useSWR<PostsResponse>("/api/post");
+  const { data } = useSWR<VideosResponse>("/api/post/video");
   console.log(data);
   return (
     <div>
       <HeaderMenu />
-      {data?.posts?.map((post) => (
-        <Item key={post?.id} post={post} />
+      {data?.videos?.map((video) => (
+        <Item key={video?.id} post={video} />
       ))}
       <BottomMenu />
     </div>

@@ -139,7 +139,7 @@ export default function Upload() {
     form.urls = urls.join(" ");
     form.fileType = fileType;
 
-    //useApi(form);
+    useApi(form);
   };
   return (
     <div>

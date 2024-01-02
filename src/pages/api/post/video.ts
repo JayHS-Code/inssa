@@ -4,7 +4,12 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
-  const posts = await client.post.findMany({
+  const videos = await client.post.findMany({
+    where: {
+      AND: {
+        fileType: "video",
+      },
+    },
     include: {
       user: {
         select: {
@@ -15,7 +20,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
     },
   });
 
-  return res.json({ ok: true, posts });
+  return res.json({ ok: true, videos });
 }
 
 export default withApiSession(

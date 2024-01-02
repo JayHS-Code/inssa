@@ -2,11 +2,11 @@ import Link from "next/link";
 
 export default function BottomMenu() {
   return (
-    <div className="fixed w-full max-w-3xl left-2/4 -translate-x-2/4 bottom-0 flex justify-around">
+    <div className="bg-white border-t border-black fixed w-full max-w-3xl left-2/4 -translate-x-2/4 bottom-0 flex justify-around">
       <Link href="/">
         <div>Home</div>
       </Link>
-      <Link href="/video">
+      <Link href="/v">
         <div>video</div>
       </Link>
       <Link href="/live">

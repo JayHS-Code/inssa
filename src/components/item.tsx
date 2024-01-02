@@ -1,13 +1,67 @@
-import { IconBookMark, IconComment, IconHeart } from "./svg";
+import { Post } from "@prisma/client";
+import {
+  IconBookMark,
+  IconComment,
+  IconEllipsisVertical,
+  IconHeart,
+} from "./svg";
+import { useEffect, useState } from "react";
 
-export default function Item() {
+type PostWithUser = Post & {
+  user: {
+    avatar: string;
+    nickname: string;
+  };
+};
+
+interface PropsType {
+  post: PostWithUser;
+}
+
+export default function Item({ post }: PropsType) {
+  const {
+    fileType,
+    url,
+    user: { nickname },
+  } = post;
+  const [imgUrl, setImgUrl] = useState<string[]>([]);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
+  useEffect(() => {
+    const splitUrl = url.split(" ");
+    setImgUrl(splitUrl);
+  }, []);
+  const dropDownOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
+  const dropDownClose = () => {
+    setIsOpen(false);
+  };
   return (
-    <div>
-      <div className="flex items-center gap-3">
-        <img src="2.jpg" className="w-8 h-8 rounded-full" />
-        <div className="font-medium text-sm">유저네임 username</div>
+    <div className="mt-10">
+      <div className="flex justify-between">
+        <div className="flex items-center gap-3">
+          <img src="2.jpg" className="w-8 h-8 rounded-full" />
+          <div className="font-medium text-sm">{nickname}</div>
+        </div>
+        <div className="relative flex justify-center items-center">
+          <button onClick={dropDownOpen} onBlur={dropDownClose}>
+            <IconEllipsisVertical />
+          </button>
+          <ul
+            className={`absolute flex justify-center flex-wrap-reverse w-12 mt-20 mr-6 bg-black text-white rounded-md cursor-pointer z-10 ${
+              isOpen ? "block" : "hidden"
+            }`}
+          >
+            <li>차단</li>
+            <li>수정</li>
+          </ul>
+        </div>
       </div>
-      <img src="1.png" className="mt-3 rounded-md" />
+      {fileType === "video" ? (
+        <video src={post?.url} className="mt-3 rounded-md"></video>
+      ) : (
+        <img src={imgUrl[0]} className="mt-3 rounded-md" />
+      )}
       <div className="mt-3 flex justify-between">
         <div className="flex">
           <IconHeart />
