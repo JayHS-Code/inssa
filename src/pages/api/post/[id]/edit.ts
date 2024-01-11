@@ -6,20 +6,27 @@ import { withApiSession } from "@/libs/server/withSession";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     query: { id },
+    body: { title, description, fileType, urls },
   } = req;
 
-  const post = await client.post.findUnique({
+  await client.post.update({
     where: {
       id: Number(id),
     },
+    data: {
+      title,
+      description,
+      fileType,
+      url: urls && urls,
+    },
   });
 
-  res.json({ ok: true, post });
+  res.json({ ok: true });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     handler,
   })
 );

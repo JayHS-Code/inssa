@@ -33,7 +33,7 @@ export default function PostDetail() {
   const [clickComment, setClickComment] = useState(false);
   const [moreView, setMoreView] = useState(false);
   const { data, mutate } = useSWR<ResponseData>(
-    router.query.id ? `/api/post/${router.query.id}` : null
+    router.query.id ? `/api/post/${router.query.id}/detail` : null
   );
   const [useApi] = useFetch(`/api/post/${router.query.id}/fav`);
   const [useCommentApi, { data: commentData, loading: commentLoading }] =
