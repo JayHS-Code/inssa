@@ -7,7 +7,7 @@ interface MessageProps {
 export default function Message({ message, reversed, avatar }: MessageProps) {
   return (
     <div
-      className={`flex  items-start space-x-2 ${
+      className={`flex items-start space-x-2 mb-3 ${
         reversed ? "flex-row-reverse space-x-reverse" : ""
       }`}
     >

@@ -6,6 +6,7 @@ import {
   IconHeart,
 } from "./svg";
 import { useEffect, useState } from "react";
+import PostOptionModal from "./postOptionModal";
 
 type PostWithUser = Post & {
   user: {
@@ -25,17 +26,12 @@ export default function Item({ post }: PropsType) {
     user: { nickname },
   } = post;
   const [imgUrl, setImgUrl] = useState<string[]>([]);
-  const [isOpen, setIsOpen] = useState<boolean>(false);
+  const [showModal, setShowModal] = useState(false);
   useEffect(() => {
     const splitUrl = url.split(" ");
     setImgUrl(splitUrl);
   }, []);
-  const dropDownOpen = () => {
-    setIsOpen((prev) => !prev);
-  };
-  const dropDownClose = () => {
-    setIsOpen(false);
-  };
+  const clickModal = () => setShowModal(!showModal);
   return (
     <div className="mt-10">
       <div className="flex justify-between">
@@ -44,17 +40,10 @@ export default function Item({ post }: PropsType) {
           <div className="font-medium text-sm">{nickname}</div>
         </div>
         <div className="relative flex justify-center items-center">
-          <button onClick={dropDownOpen} onBlur={dropDownClose}>
+          <div onClick={clickModal} className="cursor-pointer">
             <IconEllipsisVertical />
-          </button>
-          <ul
-            className={`absolute flex justify-center flex-wrap-reverse w-12 mt-20 mr-6 bg-black text-white rounded-md cursor-pointer z-10 ${
-              isOpen ? "block" : "hidden"
-            }`}
-          >
-            <li>차단</li>
-            <li>수정</li>
-          </ul>
+          </div>
+          {showModal && <PostOptionModal clickModal={clickModal} post={post} />}
         </div>
       </div>
       {fileType === "video" ? (
@@ -78,4 +67,4 @@ export default function Item({ post }: PropsType) {
 }
 
 // 유저 이름, 사진, 제목, 내용, 태그
-// 비디오는 상황에 따라 다른데 따로 페이지를 만들던지 아니면 홈 화면에 비디오, 사진 구분없이 올리던지.
+// 비디오는 상황에 따라 다른데 따로 페이지를 만들기 아니면 홈 화면에 비디오, 사진 구분없이

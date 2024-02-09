@@ -1,7 +1,6 @@
 import BottomMenu from "@/components/bottomMenu";
 import HeaderMenu from "@/components/headerMenu";
 import Item from "@/components/item";
-import useUser from "@/libs/client/useUser";
 import { Post } from "@prisma/client";
 import useSWR from "swr";
 
@@ -18,7 +17,6 @@ interface PostsResponse {
 }
 
 export default function Home() {
-  useUser();
   const { data } = useSWR<PostsResponse>("/api/post");
   console.log(data);
   return (

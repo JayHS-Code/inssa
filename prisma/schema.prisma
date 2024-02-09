@@ -27,6 +27,8 @@ model User {
   Comment     Comment[]
   live        Live[]
   message     Message[]
+  Chat        Chat[]
+  Room        Room[]
 }
 
 model Token {
@@ -99,4 +101,27 @@ model Message {
   updateAt  DateTime @updatedAt
   userId    Int
   liveId    Int
+}
+
+model Room {
+  id              Int      @id @default(autoincrement())
+  roomId          String
+  users           String
+  active          Boolean  @default(true)
+  chatInvisibleTo String?
+  createdAt       DateTime @default(now())
+  updateAt        DateTime @updatedAt
+  user            User[]
+  chat            Chat[]
+}
+
+model Chat {
+  id        Int      @id @default(autoincrement())
+  message   String   @db.LongText
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  room      Room     @relation(fields: [roomId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  userId    Int
+  roomId    Int
 }
