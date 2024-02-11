@@ -6,19 +6,25 @@ import { withApiSession } from "@/libs/server/withSession";
 async function handler(req: NextApiRequest, res: any) {
   const {
     session: { user },
-    query: { id },
   } = req;
 
-  const room = await client.room.findFirst({
+  const room = await client.room.findMany({
     where: {
-      roomId: id?.toString(),
+      user: {
+        some: {
+          id: {
+            in: [Number(user?.id)],
+          },
+        },
+      },
     },
     include: {
       user: true,
       chat: {
-        include: {
-          user: true,
+        orderBy: {
+          id: "desc",
         },
+        take: 1,
       },
     },
   });
