@@ -22,7 +22,7 @@ export default function Direct() {
   return (
     <div className="space-y-5">
       <HeaderMenu />
-      {data?.room.map((room, idx) => (
+      {data?.room?.map((room, idx) => (
         <div
           onClick={() => {
             router.push(`direct/${room?.roomId}`);
@@ -38,7 +38,8 @@ export default function Direct() {
             <div className="flex flex-col">
               <div className="font-extrabold text-sm">이름</div>
               <div className="font-thin text-sm max-w-sm overflow-hidden text-ellipsis whitespace-nowrap text-slate-500">
-                {room?.chat[0]?.message}
+                oooooooooooooooooooooooooooooooooooooooooooooooooooooasdfasfdasf
+                {/*room?.chat[0]?.message*/}
               </div>
             </div>
           </div>

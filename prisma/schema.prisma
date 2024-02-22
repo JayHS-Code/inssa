@@ -104,15 +104,13 @@ model Message {
 }
 
 model Room {
-  id              Int      @id @default(autoincrement())
-  roomId          String
-  users           String
-  active          Boolean  @default(true)
-  chatInvisibleTo String?
-  createdAt       DateTime @default(now())
-  updateAt        DateTime @updatedAt
-  user            User[]
-  chat            Chat[]
+  id        Int      @id @default(autoincrement())
+  roomId    String
+  active    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updateAt  DateTime @updatedAt
+  user      User[]
+  chat      Chat[]
 }
 
 model Chat {

@@ -4,14 +4,25 @@ import { NextApiRequest } from "next";
 import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: any) {
-  const message = req.body;
+  const { message, roomId, roomActive } = req.body;
   const {
     session: { user },
   } = req;
 
+  if (!roomActive) {
+    await client.room.update({
+      where: {
+        id: roomId,
+      },
+      data: {
+        active: true,
+      },
+    });
+  }
+
   const chat = await client.chat.create({
     data: {
-      message: message?.message,
+      message: message,
       user: {
         connect: {
           id: user?.id,
@@ -19,7 +30,7 @@ async function handler(req: NextApiRequest, res: any) {
       },
       room: {
         connect: {
-          id: message?.roomId,
+          id: roomId,
         },
       },
     },

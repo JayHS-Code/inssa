@@ -9,11 +9,22 @@ async function handler(req: NextApiRequest, res: any) {
     session: { user },
   } = req;
 
-  const users = [postOwner, user?.id].sort().join(" ");
-
   const room = await client.room.findFirst({
     where: {
+      /*
       users: users,
+      AND: {
+        chatInvisibleTo: null,
+        active: true,
+      },
+      */
+      user: {
+        every: {
+          id: {
+            in: [user?.id, postOwner],
+          },
+        },
+      },
     },
     include: {
       user: true,
@@ -29,7 +40,6 @@ async function handler(req: NextApiRequest, res: any) {
     const createRoom = await client.room.create({
       data: {
         roomId,
-        users,
         user: {
           connect: [{ id: user?.id }, { id: postOwner }],
         },

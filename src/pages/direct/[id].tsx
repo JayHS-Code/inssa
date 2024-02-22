@@ -26,8 +26,11 @@ export default function DirectRoom() {
     `${router.query.id ? `/api/direct/${router.query.id}/getMessage` : null}`
   );
   const { register, handleSubmit, reset } = useForm();
-  const [useApi, { loading }] = useFetch(
+  const [sendMsgApi, { loading }] = useFetch(
     `${router.query.id ? `/api/direct/${router.query.id}/sendMessage` : null}`
+  );
+  const [exitApi] = useFetch(
+    `${router.query.id ? `/api/direct/${router.query.id}/exit` : null}`
   );
   const [messages, setMessages] = useState<MessageWithUser[]>([]);
   useEffect(() => {
@@ -60,6 +63,11 @@ export default function DirectRoom() {
     if (socket) return () => socket.disconnect();
   }, []);
 
+  const exit = () => {
+    exitApi({ roomId: data?.room?.id });
+    router.back();
+  };
+
   const pressEnterKey = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter" && e.shiftKey === false) {
       e.preventDefault();
@@ -84,9 +92,12 @@ export default function DirectRoom() {
   const onValid = (form: any) => {
     if (loading) return;
     form.roomId = data?.room?.id;
-    useApi(form);
+    form.roomActive = data?.room?.active;
+    sendMsgApi(form);
     reset();
   };
+
+  console.log(data);
 
   return (
     <div className="relative">
@@ -100,7 +111,7 @@ export default function DirectRoom() {
               ? data?.room?.user[0].nickname
               : data?.room?.user[1].nickname}
           </div>
-          <div className="cursor-pointer">
+          <div onClick={exit} className="cursor-pointer">
             <IconArrowRightStartOnRectAngle />
           </div>
         </div>
@@ -116,6 +127,16 @@ export default function DirectRoom() {
               />
             ))
           : null}
+        {/*
+          <div className="relative">
+            <div className="absolute w-full border-t border-gray-300" />
+            <div className="relative -top-3 text-center">
+              <span className="bg-white px-2 text-sm text-gray-500">
+                누구 님이 나갔습니다.
+              </span>
+            </div>
+          </div>
+          */}
       </div>
       <div className="fixed inset-x-0 bottom-0">
         <form
@@ -123,6 +144,7 @@ export default function DirectRoom() {
           onSubmit={handleSubmit(onValid)}
         >
           <textarea
+            readOnly={data?.room?.user.length ? false : true}
             rows={1}
             className="w-full max-h-20 mr-10 bg-slate-300 border-none resize-none"
             ref={(e) => {
