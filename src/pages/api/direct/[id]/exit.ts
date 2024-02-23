@@ -9,7 +9,7 @@ async function handler(req: NextApiRequest, res: any) {
     body: { roomId },
   } = req;
 
-  await client.user.update({
+  const updateUser = await client.user.update({
     where: {
       id: user?.id,
     },
@@ -28,6 +28,28 @@ async function handler(req: NextApiRequest, res: any) {
     },
     data: {
       active: false,
+      user: {
+        disconnect: {
+          id: user?.id,
+        },
+      },
+    },
+  });
+
+  await client.chat.create({
+    data: {
+      message: `${updateUser?.nickname} 님이 나갔습니다.`,
+      notification: true,
+      user: {
+        connect: {
+          id: user?.id,
+        },
+      },
+      room: {
+        connect: {
+          id: roomId,
+        },
+      },
     },
   });
 

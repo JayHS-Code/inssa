@@ -9,22 +9,19 @@ async function handler(req: NextApiRequest, res: any) {
     session: { user },
   } = req;
 
+  const userIds = [user?.id, postOwner];
+
   const room = await client.room.findFirst({
     where: {
-      /*
-      users: users,
-      AND: {
-        chatInvisibleTo: null,
-        active: true,
-      },
-      */
-      user: {
-        every: {
-          id: {
-            in: [user?.id, postOwner],
+      AND: userIds.map((id) => ({
+        user: {
+          some: {
+            id: {
+              equals: id,
+            },
           },
         },
-      },
+      })),
     },
     include: {
       user: true,

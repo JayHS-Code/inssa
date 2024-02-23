@@ -17,6 +17,11 @@ async function handler(req: NextApiRequest, res: any) {
           },
         },
       },
+      chat: {
+        some: {
+          notification: false,
+        },
+      },
     },
     include: {
       user: true,

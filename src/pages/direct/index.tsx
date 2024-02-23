@@ -2,6 +2,7 @@ import BottomMenu from "@/components/bottomMenu";
 import HeaderMenu from "@/components/headerMenu";
 import useUser from "@/libs/client/useUser";
 import { chatProfileImg } from "@/libs/utils/chatProfileImg";
+import { getTime } from "@/libs/utils/getTime";
 import { Chat, Room, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
@@ -36,15 +37,18 @@ export default function Direct() {
           />
           <div className="w-full px-5">
             <div className="flex flex-col">
-              <div className="font-extrabold text-sm">이름</div>
+              <div className="font-extrabold text-sm">
+                {room?.user[0]?.id === user?.id
+                  ? room?.user[1]?.nickname
+                  : room?.user[0]?.nickname}
+              </div>
               <div className="font-thin text-sm max-w-sm overflow-hidden text-ellipsis whitespace-nowrap text-slate-500">
-                oooooooooooooooooooooooooooooooooooooooooooooooooooooasdfasfdasf
-                {/*room?.chat[0]?.message*/}
+                {room?.chat[0]?.message}
               </div>
             </div>
           </div>
           <div className="text-xs text-slate-500 whitespace-nowrap">
-            오후 16:00
+            {getTime({ dateTime: room?.chat[0]?.createdAt })}
           </div>
         </div>
       ))}

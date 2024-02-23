@@ -122,21 +122,13 @@ export default function DirectRoom() {
               <Message
                 key={idx}
                 message={message.message}
+                dateTime={message?.createdAt}
+                notification={message?.notification}
                 reversed={message?.user?.id === user?.id}
                 avatar={message?.user?.avatar}
               />
             ))
           : null}
-        {/*
-          <div className="relative">
-            <div className="absolute w-full border-t border-gray-300" />
-            <div className="relative -top-3 text-center">
-              <span className="bg-white px-2 text-sm text-gray-500">
-                누구 님이 나갔습니다.
-              </span>
-            </div>
-          </div>
-          */}
       </div>
       <div className="fixed inset-x-0 bottom-0">
         <form
@@ -144,7 +136,7 @@ export default function DirectRoom() {
           onSubmit={handleSubmit(onValid)}
         >
           <textarea
-            readOnly={data?.room?.user.length ? false : true}
+            readOnly={data?.room?.active ? false : true}
             rows={1}
             className="w-full max-h-20 mr-10 bg-slate-300 border-none resize-none"
             ref={(e) => {
