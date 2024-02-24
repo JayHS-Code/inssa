@@ -1,4 +1,5 @@
 import Message from "@/components/message";
+import ProfileModal from "@/components/profileModal";
 import {
   IconArrowLeft,
   IconArrowRightStartOnRectAngle,
@@ -117,14 +118,13 @@ export default function DirectRoom() {
       <div className="mt-5 -mb-6">
         {messages.length
           ? messages.map((message, idx) => (
-              <Message
-                key={idx}
-                message={message.message}
-                dateTime={message?.createdAt}
-                notification={message?.notification}
-                reversed={message?.user?.id === user?.id}
-                avatar={message?.user?.avatar}
-              />
+              <>
+                <Message
+                  key={idx}
+                  message={message}
+                  reversed={message?.user?.id === user?.id}
+                />
+              </>
             ))
           : null}
       </div>

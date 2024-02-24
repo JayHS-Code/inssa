@@ -1,30 +1,25 @@
 import { getTime } from "@/libs/utils/getTime";
+import ProfileModal from "./profileModal";
+import { useState } from "react";
+import { Chat, User } from "@prisma/client";
 
-interface MessageProps {
-  message: string;
-  dateTime: Date;
+type MessageWithUser = Chat & {
+  user: User;
+};
+
+type MessageProps = {
+  message: MessageWithUser;
   reversed?: boolean;
-  notification?: boolean;
-  avatar?: string | null;
-}
+};
 
-export default function Message({
-  message,
-  dateTime,
-  reversed,
-  notification,
-  avatar,
-}: MessageProps) {
-  if (notification) {
-    return (
-      <div className="relative mt-5">
-        <div className="absolute w-full border-t border-gray-300" />
-        <div className="relative -top-3 text-center">
-          <span className="bg-white px-2 text-sm text-gray-500">{message}</span>
-        </div>
-      </div>
-    );
-  }
+export default function Message({ message, reversed }: MessageProps) {
+  const {
+    message: chat,
+    createdAt: dateTime,
+    user: { avatar },
+  } = message;
+  const [showProfile, setShowProfile] = useState(false);
+  const clickModal = () => setShowProfile(!showProfile);
   return (
     <div
       className={`flex space-x-2 mb-3 whitespace-pre ${
@@ -33,12 +28,16 @@ export default function Message({
     >
       {!reversed ? (
         <img
+          onClick={clickModal}
           src={`${avatar ? avatar : "/empty.png"}`}
-          className="w-8 h-8 rounded-full"
+          className="w-8 h-8 rounded-full cursor-pointer"
         />
       ) : null}
+      {showProfile && (
+        <ProfileModal user={message?.user} clickModal={clickModal} />
+      )}
       <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
-        <p>{message}</p>
+        <p>{chat}</p>
       </div>
       <div className="flex items-end text-[10px]">{getTime({ dateTime })}</div>
     </div>
