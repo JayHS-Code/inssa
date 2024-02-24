@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 
-type UserList = {
+export type UserList = {
   myId: string;
   userList: User[];
 };
@@ -8,7 +8,7 @@ type UserList = {
 export const chatProfileImg = ({ myId, userList }: UserList) => {
   const opponent = userList.filter((user) => Number(myId) !== Number(user?.id));
 
-  if (opponent[0].avatar) {
+  if (opponent.length && opponent[0].avatar) {
     return opponent[0].avatar;
   } else {
     return "empty.png";

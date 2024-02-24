@@ -9,7 +9,8 @@ async function handler(req: NextApiRequest, res: any) {
     body: { roomId },
   } = req;
 
-  const updateUser = await client.user.update({
+  /*
+  await client.user.update({
     where: {
       id: user?.id,
     },
@@ -20,25 +21,25 @@ async function handler(req: NextApiRequest, res: any) {
         },
       },
     },
-  });
+  });*/
 
   await client.room.update({
     where: {
       id: roomId,
     },
     data: {
-      active: false,
-      user: {
-        disconnect: {
+      leaveUser: {
+        connect: {
           id: user?.id,
         },
       },
     },
   });
 
+  /*
   await client.chat.create({
     data: {
-      message: `${updateUser?.nickname} 님이 나갔습니다.`,
+      message: `상대방이 채팅방을 나갔습니다.`,
       notification: true,
       user: {
         connect: {
@@ -51,7 +52,7 @@ async function handler(req: NextApiRequest, res: any) {
         },
       },
     },
-  });
+  });*/
 
   res.status(201).json({ ok: true });
 }

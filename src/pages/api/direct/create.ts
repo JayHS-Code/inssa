@@ -22,6 +22,7 @@ async function handler(req: NextApiRequest, res: any) {
           },
         },
       })),
+      active: true,
     },
     include: {
       user: true,

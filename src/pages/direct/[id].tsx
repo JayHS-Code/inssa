@@ -92,12 +92,10 @@ export default function DirectRoom() {
   const onValid = (form: any) => {
     if (loading) return;
     form.roomId = data?.room?.id;
-    form.roomActive = data?.room?.active;
+    form.leaveUser = data?.room?.leaveUser.length;
     sendMsgApi(form);
     reset();
   };
-
-  console.log(data);
 
   return (
     <div className="relative">

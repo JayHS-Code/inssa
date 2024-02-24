@@ -4,18 +4,20 @@ import { NextApiRequest } from "next";
 import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: any) {
-  const { message, roomId, roomActive } = req.body;
+  const { message, roomId, leaveUser } = req.body;
   const {
     session: { user },
   } = req;
 
-  if (!roomActive) {
+  if (leaveUser !== 0) {
     await client.room.update({
       where: {
         id: roomId,
       },
       data: {
-        active: true,
+        leaveUser: {
+          set: [],
+        },
       },
     });
   }

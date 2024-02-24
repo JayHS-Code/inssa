@@ -15,6 +15,7 @@ async function handler(req: NextApiRequest, res: any) {
     },
     include: {
       user: true,
+      leaveUser: true,
       chat: {
         include: {
           user: true,

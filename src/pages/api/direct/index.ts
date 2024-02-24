@@ -12,20 +12,24 @@ async function handler(req: NextApiRequest, res: any) {
     where: {
       user: {
         some: {
-          id: {
-            in: [Number(user?.id)],
-          },
+          id: user?.id,
         },
       },
-      chat: {
-        some: {
-          notification: false,
+      NOT: {
+        leaveUser: {
+          some: {
+            id: user?.id,
+          },
         },
       },
     },
     include: {
       user: true,
+      leaveUser: true,
       chat: {
+        include: {
+          user: true,
+        },
         orderBy: {
           id: "desc",
         },
