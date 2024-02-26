@@ -1,8 +1,17 @@
 import { User } from "@prisma/client";
 import { useRouter } from "next/router";
+import ProfilePostPreview from "./profilePostPreview";
+
+type UserWithPost = User & {
+  Post: {
+    id: number;
+    url: string;
+    fileType: "image" | "video";
+  }[];
+};
 
 type propsType = {
-  user: User;
+  user: UserWithPost;
   clickModal: () => void;
 };
 
@@ -42,6 +51,13 @@ export default function ProfileModal({ clickModal, user }: propsType) {
                 프로필 보기
               </div>
             </div>
+          </div>
+          <div className="px-2 flex flex-wrap gap-[1.5%]">
+            {user?.Post.length
+              ? user?.Post.map((post, idx) => (
+                  <ProfilePostPreview key={idx} post={post} />
+                ))
+              : null}
           </div>
         </div>
       </div>

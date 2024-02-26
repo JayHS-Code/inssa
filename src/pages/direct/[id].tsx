@@ -14,8 +14,16 @@ import { useForm } from "react-hook-form";
 import io from "socket.io-client";
 import useSWR from "swr";
 
+type UserWithPost = User & {
+  Post: {
+    id: number;
+    url: string;
+    fileType: "image" | "video";
+  }[];
+};
+
 type MessageWithUser = Chat & {
-  user: User;
+  user: UserWithPost;
 };
 
 export default function DirectRoom() {

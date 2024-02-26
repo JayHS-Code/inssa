@@ -3,8 +3,16 @@ import ProfileModal from "./profileModal";
 import { useState } from "react";
 import { Chat, User } from "@prisma/client";
 
+type UserWithPost = User & {
+  Post: {
+    id: number;
+    url: string;
+    fileType: "image" | "video";
+  }[];
+};
+
 type MessageWithUser = Chat & {
-  user: User;
+  user: UserWithPost;
 };
 
 type MessageProps = {

@@ -15,7 +15,7 @@ export default function ProfilePostPreview({ post }: postType) {
     return (
       <img
         onClick={() => router.push(`/p/${post?.id}`)}
-        className="w-[32%] h-[32%] min-w-[179px] min-h-[179px] mb-[2%] cursor-pointer hover:brightness-50"
+        className="w-[32%] aspect-square mb-[2%] cursor-pointer hover:brightness-50"
         src={post?.url.split(" ")[1]}
       />
     );
@@ -24,7 +24,7 @@ export default function ProfilePostPreview({ post }: postType) {
   return (
     <video
       onClick={() => router.push(`/p/${post?.id}`)}
-      className="w-[32%] h-[32%] min-w-[179px] min-h-[179px] mb-[2%] object-cover cursor-pointer hover:brightness-50"
+      className="w-[32%] aspect-square mb-[2%] object-cover cursor-pointer hover:brightness-50"
       src={post?.url}
     ></video>
   );

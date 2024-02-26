@@ -18,7 +18,17 @@ async function handler(req: NextApiRequest, res: any) {
       leaveUser: true,
       chat: {
         include: {
-          user: true,
+          user: {
+            include: {
+              Post: {
+                select: {
+                  id: true,
+                  url: true,
+                  fileType: true,
+                },
+              },
+            },
+          },
         },
       },
     },
