@@ -1,6 +1,8 @@
+import useUser from "@/libs/client/useUser";
 import Link from "next/link";
 
 export default function BottomMenu() {
+  const { user } = useUser();
   return (
     <div className="bg-white border-t border-black fixed w-full max-w-3xl left-2/4 -translate-x-2/4 bottom-0 flex justify-around z-0">
       <Link href="/">
@@ -15,7 +17,7 @@ export default function BottomMenu() {
       <Link href="/direct">
         <div>Direct</div>
       </Link>
-      <Link href="/profile">
+      <Link href={`/profile/${user?.nickname}`}>
         <div>Profile</div>
       </Link>
     </div>

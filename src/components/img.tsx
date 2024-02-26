@@ -12,7 +12,7 @@ export default function Img({ url, preview, cls }: PropsType) {
   if (url) {
     imgUrl = `https://imagedelivery.net/Xy_RhqCCpc7KDMYzTB509w/${url}/public`;
   } else {
-    imgUrl = "empty.png";
+    imgUrl = "/empty.png";
   }
 
   if (preview) {

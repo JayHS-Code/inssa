@@ -2,6 +2,7 @@ import {
   IconComment,
   IconEye,
   IconHeart,
+  IconPencil,
   IconSolidComment,
   IconSolidHeart,
 } from "@/components/svg";
@@ -43,6 +44,9 @@ export default function PostDetail() {
     if (!data) return;
     mutate({ ...data, isLiked: !data.isLiked }, false);
   };
+  const onEditClick = () => {
+    router.push(`/p/${data?.post?.id}/edit`);
+  };
   const onCommentValid = (comment: CommentForm) => {
     if (commentLoading) return;
     useCommentApi(comment);
@@ -68,31 +72,39 @@ export default function PostDetail() {
             </p>
           </div>
         </div>
-        <div className="border-b flex">
-          <div className="p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 text-gray-400 hover:text-gray-500 border-b border-white">
-            <IconEye />
-            <span className="ml-3">{data?.post?.views}</span>
+        <div className="border-b flex justify-between">
+          <div className="flex">
+            <div className="p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 text-gray-400 hover:text-gray-500 border-b border-white">
+              <IconEye />
+              <span className="ml-3">{data?.post?.views}</span>
+            </div>
+            <button
+              onClick={onFavClick}
+              className={`p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 ${
+                data?.isLiked
+                  ? "text-red-400  hover:text-red-500 border-b border-orange-500"
+                  : "text-gray-400 hover:text-gray-500 border-b border-white"
+              }`}
+            >
+              {data?.isLiked ? <IconSolidHeart /> : <IconHeart />}
+            </button>
+            <button
+              onClick={() => setClickComment((prev) => !prev)}
+              className={`p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 ${
+                !clickComment
+                  ? "text-gray-400 hover:text-gray-500 border-b border-white"
+                  : "text-orange-500 hover:text-orange-500 border-b border-orange-500"
+              }`}
+            >
+              {!clickComment ? <IconComment /> : <IconSolidComment />}
+            </button>
           </div>
-          <button
-            onClick={onFavClick}
-            className={`p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 ${
-              data?.isLiked
-                ? "text-red-400  hover:text-red-500 border-b border-orange-500"
-                : "text-gray-400 hover:text-gray-500 border-b border-white"
-            }`}
+          <div
+            onClick={onEditClick}
+            className="p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100"
           >
-            {data?.isLiked ? <IconSolidHeart /> : <IconHeart />}
-          </button>
-          <button
-            onClick={() => setClickComment((prev) => !prev)}
-            className={`p-3 rounded-md rounded-b-none flex items-center justify-center hover:bg-gray-100 ${
-              !clickComment
-                ? "text-gray-400 hover:text-gray-500 border-b border-white"
-                : "text-orange-500 hover:text-orange-500 border-b border-orange-500"
-            }`}
-          >
-            {!clickComment ? <IconComment /> : <IconSolidComment />}
-          </button>
+            <IconPencil />
+          </div>
         </div>
         <div
           onClick={!moreView ? () => setMoreView(true) : undefined}

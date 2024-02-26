@@ -7,6 +7,7 @@ import {
 } from "./svg";
 import { useEffect, useState } from "react";
 import PostOptionModal from "./postOptionModal";
+import { useRouter } from "next/router";
 
 type PostWithUser = Post & {
   user: {
@@ -27,17 +28,30 @@ export default function Item({ post }: PropsType) {
   } = post;
   const [imgUrl, setImgUrl] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
   useEffect(() => {
     const splitUrl = url.split(" ");
     setImgUrl(splitUrl);
   }, []);
+  const viewProfile = () => {
+    router.push(`/profile/${post?.user?.nickname}`);
+  };
   const clickModal = () => setShowModal(!showModal);
   return (
     <div className="mt-10">
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <img src="2.jpg" className="w-8 h-8 rounded-full" />
-          <div className="font-medium text-sm">{nickname}</div>
+          <img
+            onClick={viewProfile}
+            src="2.jpg"
+            className="w-8 h-8 rounded-full cursor-pointer"
+          />
+          <div
+            onClick={viewProfile}
+            className="font-medium text-sm cursor-pointer"
+          >
+            {nickname}
+          </div>
         </div>
         <div className="relative flex justify-center items-center">
           <div onClick={clickModal} className="cursor-pointer">

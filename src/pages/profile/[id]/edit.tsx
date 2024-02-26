@@ -27,7 +27,9 @@ export default function EditProfile() {
     setError,
     watch,
   } = useForm<EditProfileForm>();
-  const [useApi, { data, loading }] = useFetch(`/api/users/editProfile`);
+  const [useApi, { data, loading }] = useFetch(
+    `/api/users/profile/editProfile`
+  );
   useEffect(() => {
     if (user?.nickname) setValue("nickname", user?.nickname);
     if (user?.description) setValue("description", user?.description);
