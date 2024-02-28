@@ -4,10 +4,7 @@ interface PropsType {
   cls?: string;
 }
 
-// https://imagedelivery.net/Xy_RhqCCpc7KDMYzTB509w/<image_id>/<variant_name>
-// https://imagedelivery.net/Xy_RhqCCpc7KDMYzTB509w/${url}/public
-
-export default function Img({ url, preview, cls }: PropsType) {
+export default function ProfilePreview({ url, preview, cls }: PropsType) {
   let imgUrl = "";
   if (url) {
     imgUrl = `https://imagedelivery.net/Xy_RhqCCpc7KDMYzTB509w/${url}/public`;

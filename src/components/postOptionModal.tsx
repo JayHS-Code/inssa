@@ -13,10 +13,12 @@ export default function PostOptionModal({ clickModal, post }: PropsType) {
   const router = useRouter();
   const [useApi, { loading, data }] = useFetch(`/api/direct/create`);
   const { user } = useUser();
-  console.log(user);
   const enterDirect = () => {
     if (loading) return;
     useApi({ postOwner: post?.userId });
+  };
+  const viewPost = () => {
+    router.push(`/p/${post?.id}`);
   };
   useEffect(() => {
     if (data) {
@@ -33,9 +35,12 @@ export default function PostOptionModal({ clickModal, post }: PropsType) {
         onClick={(e) => e.stopPropagation()}
         className="w-96 bg-gray-700 rounded-md flex flex-col divide-y-[1px] cursor-pointer"
       >
-        {post?.userId !== user?.id && (
+        {post?.userId === user?.id && (
           <div className="p-3 text-white text-center">수정하기</div>
         )}
+        <div onClick={viewPost} className="p-3 text-white text-center">
+          게시물로 이동하기
+        </div>
         {post?.userId !== user?.id && (
           <div onClick={enterDirect} className="p-3 text-white text-center">
             1:1 대화하기

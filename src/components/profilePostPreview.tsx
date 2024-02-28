@@ -8,7 +8,7 @@ type postType = {
   };
 };
 
-export default function ProfilePostPreview({ post }: postType) {
+export default function PostPreview({ post }: postType) {
   const router = useRouter();
 
   if (post?.fileType === "image") {

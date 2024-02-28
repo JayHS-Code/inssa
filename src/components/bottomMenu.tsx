@@ -15,7 +15,6 @@ import { useRouter } from "next/router";
 export default function BottomMenu() {
   const { user } = useUser();
   const router = useRouter();
-  console.log(router.asPath);
   return (
     <div className="bg-white py-2 border-t border-black fixed w-full max-w-3xl left-2/4 -translate-x-2/4 bottom-0 flex items-center justify-around z-0">
       <Link href="/">
@@ -59,7 +58,7 @@ export default function BottomMenu() {
           <img
             className={`w-7 h-7 rounded-full ${
               router?.asPath === `/profile/${user?.nickname}`
-                ? "border-solid border-2 border-white"
+                ? "border-solid border-2 border-black"
                 : null
             }`}
             src={user?.avatar ? user?.avatar : "/empty.png"}

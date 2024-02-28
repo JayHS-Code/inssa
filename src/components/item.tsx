@@ -1,10 +1,5 @@
 import { Post } from "@prisma/client";
-import {
-  IconBookMark,
-  IconComment,
-  IconEllipsisVertical,
-  IconHeart,
-} from "./svg";
+import { IconComment, IconEllipsisVertical, IconHeart } from "./svg";
 import { useEffect, useState } from "react";
 import PostOptionModal from "./postOptionModal";
 import { useRouter } from "next/router";
@@ -22,8 +17,10 @@ interface PropsType {
 
 export default function Item({ post }: PropsType) {
   const {
+    id,
     fileType,
     url,
+    description,
     user: { nickname },
   } = post;
   const [imgUrl, setImgUrl] = useState<string[]>([]);
@@ -34,11 +31,11 @@ export default function Item({ post }: PropsType) {
     setImgUrl(splitUrl);
   }, []);
   const viewProfile = () => {
-    router.push(`/profile/${post?.user?.nickname}`);
+    router.push(`/profile/${nickname}`);
   };
   const clickModal = () => setShowModal(!showModal);
   return (
-    <div className="mt-10">
+    <div className="mt-10 z-0">
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
           <img
@@ -61,24 +58,22 @@ export default function Item({ post }: PropsType) {
         </div>
       </div>
       {fileType === "video" ? (
-        <video src={post?.url} className="mt-3 rounded-md"></video>
+        <video
+          src={url}
+          controls
+          className="w-full bg-black mt-3 rounded-md aspect-square object-contain"
+        ></video>
       ) : (
-        <img src={imgUrl[0]} className="mt-3 rounded-md" />
+        <img
+          src={imgUrl[0]}
+          className="w-full bg-black mt-3 rounded-md aspect-square object-contain"
+        />
       )}
-      <div className="mt-3 flex justify-between">
-        <div className="flex">
-          <IconHeart />
-          <IconComment />
-        </div>
-        <IconBookMark />
+      <div className="mt-3 flex gap-2">
+        <IconHeart />
+        <IconComment />
       </div>
-      <div className="pt-2 break-words break-all">description</div>
-      <div>
-        <span># hashtag</span>
-      </div>
+      <div className="pt-2 break-words break-all">{description}</div>
     </div>
   );
 }
-
-// 유저 이름, 사진, 제목, 내용, 태그
-// 비디오는 상황에 따라 다른데 따로 페이지를 만들기 아니면 홈 화면에 비디오, 사진 구분없이

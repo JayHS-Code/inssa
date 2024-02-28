@@ -1,5 +1,5 @@
 import BottomMenu from "@/components/bottomMenu";
-import Img from "@/components/img";
+import ProfilePreview from "@/components/profilePreview";
 import ProfilePostPreview from "@/components/profilePostPreview";
 import { IconAtSymbol, IconDevicePhoneMobile } from "@/components/svg";
 import useUser from "@/libs/client/useUser";
@@ -41,7 +41,10 @@ export default function Profile() {
     <div>
       <div>
         <div className="flex items-center space-x-16">
-          <Img url={user?.avatar} cls={"w-32 h-32 bg-slate-500 rounded-full"} />
+          <ProfilePreview
+            url={user?.avatar}
+            cls={"w-32 h-32 bg-slate-500 rounded-full"}
+          />
           <div className="h-32 flex flex-col">
             <span className="flex items-end gap-2 font-bold text-lg text-gray-900">
               {router?.query?.id}

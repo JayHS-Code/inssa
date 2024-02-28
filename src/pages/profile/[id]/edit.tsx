@@ -1,4 +1,4 @@
-import Img from "@/components/img";
+import ProfilePreview from "@/components/profilePreview";
 import { IconExclamationCircle } from "@/components/svg";
 import useFetch from "@/libs/client/useFetch";
 import useUser from "@/libs/client/useUser";
@@ -80,7 +80,7 @@ export default function EditProfile() {
       <form onSubmit={handleSubmit(onValid)}>
         <div className="flex justify-center items-center">
           <label htmlFor="picture" className="cursor-pointer rounded-full">
-            <Img
+            <ProfilePreview
               url={user?.avatar}
               preview={preview}
               cls={"w-36 h-36 rounded-full bg-slate-500 object-cover"}

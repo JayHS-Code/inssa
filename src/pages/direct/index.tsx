@@ -21,7 +21,7 @@ export default function Direct() {
   const { user } = useUser();
   const { data } = useSWR<ResponseRooms>(`/api/direct`);
   return (
-    <div className="space-y-5">
+    <div className="mt-6">
       <HeaderMenu />
       {data?.room?.map((room, idx) => (
         <div
