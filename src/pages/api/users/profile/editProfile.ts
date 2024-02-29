@@ -6,7 +6,7 @@ import { withApiSession } from "@/libs/server/withSession";
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
     session: { user },
-    body: { nickname, description, website, phone, email, avatar },
+    body: { nickname, description, website, phone, email, avatarUrl },
   } = req;
 
   const currentUser = await client.user.findUnique({
@@ -71,7 +71,7 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       description,
       website,
       ...(phone ? { phone } : { email }),
-      avatar: avatar.length ? avatar : currentUser?.avatar,
+      avatar: avatarUrl.length ? avatarUrl : currentUser?.avatar,
     },
   });
   return res.json({ ok: true });

@@ -4,6 +4,7 @@ import useFetch from "@/libs/client/useFetch";
 import useUser from "@/libs/client/useUser";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useS3Upload } from "next-s3-upload";
 
 interface EditProfileForm {
   nickname: string;
@@ -12,6 +13,7 @@ interface EditProfileForm {
   phone?: string;
   email?: string;
   avatar?: FileList;
+  avatarUrl?: string;
   formError: string;
 }
 
@@ -19,6 +21,7 @@ export default function EditProfile() {
   const { user } = useUser();
   const [editButton, setEditButton] = useState(false);
   const [preview, setPreview] = useState("");
+  const { uploadToS3 } = useS3Upload();
   const {
     register,
     handleSubmit,
@@ -58,19 +61,23 @@ export default function EditProfile() {
     }
 
     if (avatar && avatar.length > 0) {
-      const { uploadURL } = await (await fetch(`/api/files`)).json();
-      const data = new FormData();
-      data.append("file", avatar[0], user.id);
-      const {
-        result: { id },
-      } = await (
-        await fetch(uploadURL, {
-          method: "POST",
-          body: data,
+      const imgUrl = await Promise.all(
+        Array.from(avatar).map(async (file) => {
+          const { url } = await uploadToS3(file, {
+            endpoint: {
+              request: {
+                body: {
+                  userId: user?.id,
+                  s3FolderId: "profile",
+                },
+              },
+            },
+          });
+          return url;
         })
-      ).json();
+      );
 
-      form.avatar = id;
+      form.avatarUrl = imgUrl.join("");
     }
 
     useApi(form);

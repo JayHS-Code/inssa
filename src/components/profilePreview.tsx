@@ -7,7 +7,7 @@ interface PropsType {
 export default function ProfilePreview({ url, preview, cls }: PropsType) {
   let imgUrl = "";
   if (url) {
-    imgUrl = `https://imagedelivery.net/Xy_RhqCCpc7KDMYzTB509w/${url}/public`;
+    imgUrl = url;
   } else {
     imgUrl = "/empty.png";
   }
