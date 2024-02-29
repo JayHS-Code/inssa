@@ -1,5 +1,5 @@
 interface PropsType {
-  url: string;
+  url: string | null | undefined;
   preview?: string;
   cls?: string;
 }

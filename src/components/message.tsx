@@ -30,7 +30,7 @@ export default function Message({ message, reversed }: MessageProps) {
   const clickModal = () => setShowProfile(!showProfile);
   return (
     <div
-      className={`flex space-x-2 mb-3 whitespace-pre ${
+      className={`flex space-x-2 mb-3 whitespace-pre-wrap ${
         reversed ? "flex-row-reverse space-x-reverse" : ""
       }`}
     >

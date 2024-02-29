@@ -1,6 +1,6 @@
 import { User } from "@prisma/client";
 import { useRouter } from "next/router";
-import PostPreview from "./postPreview";
+import ProfilePostPreview from "./profilePostPreview";
 
 type UserWithPost = User & {
   Post: {
@@ -55,7 +55,7 @@ export default function ProfileModal({ clickModal, user }: propsType) {
           <div className="px-2 flex flex-wrap gap-[1.5%]">
             {user?.Post.length
               ? user?.Post.map((post, idx) => (
-                  <PostPreview key={idx} post={post} />
+                  <ProfilePostPreview key={idx} post={post} />
                 ))
               : null}
           </div>
