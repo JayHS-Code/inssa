@@ -6,17 +6,20 @@ type postType = {
     url: string;
     fileType: "image" | "video";
   };
+  width?: string;
 };
 
-export default function PostPreview({ post }: postType) {
+export default function PostPreview({ post, width }: postType) {
   const router = useRouter();
 
   if (post?.fileType === "image") {
     return (
       <img
         onClick={() => router.push(`/p/${post?.id}`)}
-        className="w-[32%] aspect-square mb-[2%] cursor-pointer hover:brightness-50"
-        src={post?.url.split(" ")[1]}
+        className={`${
+          width ? width : "w-[32%]"
+        } aspect-square mb-[2%] cursor-pointer hover:brightness-50`}
+        src={post?.url.split(" ")[0]}
       />
     );
   }
@@ -24,7 +27,9 @@ export default function PostPreview({ post }: postType) {
   return (
     <video
       onClick={() => router.push(`/p/${post?.id}`)}
-      className="w-[32%] aspect-square mb-[2%] object-cover cursor-pointer hover:brightness-50"
+      className={`${
+        width ? width : "w-[32%]"
+      } aspect-square mb-[2%] cursor-pointer hover:brightness-50 object-cover`}
       src={post?.url}
     ></video>
   );

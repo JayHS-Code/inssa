@@ -3,6 +3,7 @@ import { IconComment, IconEllipsisVertical, IconHeart } from "./svg";
 import { useEffect, useState } from "react";
 import PostOptionModal from "./postOptionModal";
 import { useRouter } from "next/router";
+import ProfilePreview from "./profilePreview";
 
 type PostWithUser = Post & {
   user: {
@@ -21,7 +22,7 @@ export default function Item({ post }: PropsType) {
     fileType,
     url,
     description,
-    user: { nickname },
+    user: { nickname, avatar },
   } = post;
   const [imgUrl, setImgUrl] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
@@ -38,10 +39,9 @@ export default function Item({ post }: PropsType) {
     <div className="mt-10 z-0">
       <div className="flex justify-between">
         <div className="flex items-center gap-3">
-          <img
-            onClick={viewProfile}
-            src="2.jpg"
-            className="w-8 h-8 rounded-full cursor-pointer"
+          <ProfilePreview
+            url={avatar}
+            cls={"w-8 h-8 rounded-full cursor-pointer"}
           />
           <div
             onClick={viewProfile}

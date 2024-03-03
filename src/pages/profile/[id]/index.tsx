@@ -1,6 +1,6 @@
 import BottomMenu from "@/components/bottomMenu";
 import ProfilePreview from "@/components/profilePreview";
-import ProfilePostPreview from "@/components/profilePostPreview";
+import PostPreview from "@/components/postPreview";
 import { IconAtSymbol, IconDevicePhoneMobile } from "@/components/svg";
 import useUser from "@/libs/client/useUser";
 import { User } from "@prisma/client";
@@ -91,7 +91,7 @@ export default function Profile() {
       <div className="flex flex-wrap gap-[2%]">
         {data?.profile?.Post.length
           ? data?.profile?.Post.map((post, idx) => (
-              <ProfilePostPreview key={idx} post={post} />
+              <PostPreview key={idx} post={post} />
             ))
           : null}
       </div>

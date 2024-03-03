@@ -1,6 +1,6 @@
 import BottomMenu from "@/components/bottomMenu";
 import ProfilePreview from "@/components/profilePreview";
-import ProfilePostPreview from "@/components/profilePostPreview";
+import PostPreview from "@/components/postPreview";
 import { IconAtSymbol, IconDevicePhoneMobile } from "@/components/svg";
 import useUser from "@/libs/client/useUser";
 import { Fav, User } from "@prisma/client";
@@ -39,7 +39,6 @@ export default function Profile() {
   const favProfile = () => {
     router.push(`/profile/${router?.query?.id}/fav`);
   };
-  console.log(data);
   return (
     <div>
       <div>
@@ -50,7 +49,7 @@ export default function Profile() {
           />
           <div className="h-32 flex flex-col">
             <span className="flex items-end gap-2 font-bold text-lg text-gray-900">
-              {user?.nickname}
+              {data?.profile?.nickname}
               <span>
                 {data?.profile?.phone ? (
                   <IconDevicePhoneMobile cls={"w-5 h-5"} />
@@ -94,7 +93,7 @@ export default function Profile() {
       <div className="flex flex-wrap gap-[2%]">
         {data?.profile?.Fav.length
           ? data?.profile?.Fav.map((fav, idx) => (
-              <ProfilePostPreview key={idx} post={fav?.post} />
+              <PostPreview key={idx} post={fav?.post} />
             ))
           : null}
       </div>

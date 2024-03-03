@@ -5,25 +5,17 @@ import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
   const {
-    query: { id },
-    session: { user },
+    query: { id, page },
   } = req;
 
-  const post = await client.post.update({
+  const post = await client.post.findFirst({
     where: {
       id: Number(id),
     },
-    data: {
-      views: {
-        increment: 1,
-      },
-    },
-    include: {
+    select: {
       user: {
         select: {
           id: true,
-          nickname: true,
-          avatar: true,
         },
       },
     },
@@ -39,11 +31,6 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
       },
     },
     select: {
-      _count: {
-        select: {
-          Post: true,
-        },
-      },
       Post: {
         where: {
           NOT: {
@@ -59,47 +46,17 @@ async function handler(req: NextApiRequest, res: NextApiResponse) {
           fileType: true,
         },
         take: 4,
-        skip: 0,
+        skip: Number(page) * 4,
       },
     },
   });
 
-  const isLiked = Boolean(
-    await client.fav.findFirst({
-      where: {
-        postId: post?.id,
-        userId: user?.id,
-      },
-      select: {
-        id: true,
-      },
-    })
-  );
-
-  const comment = await client.comment.findMany({
-    where: {
-      postId: Number(id),
-    },
-    include: {
-      user: {
-        select: {
-          id: true,
-          nickname: true,
-          avatar: true,
-        },
-      },
-    },
-    orderBy: {
-      createdAt: "desc",
-    },
-  });
-
-  res.json({ ok: true, post, relatedPost: relatedPost[0], isLiked, comment });
+  res.json({ ok: true, relatedPost: relatedPost[0].Post });
 }
 
 export default withApiSession(
   withHandler({
-    methods: ["GET"],
+    methods: ["POST"],
     handler,
   })
 );
