@@ -1,8 +1,10 @@
-import BottomMenu from "@/components/bottomMenu";
-import HeaderMenu from "@/components/headerMenu";
 import Item from "@/components/item";
 import { Post } from "@prisma/client";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../components/mainMenu"), {
+  ssr: false,
+});
 
 interface PostsType extends Post {
   user: {
@@ -18,14 +20,12 @@ interface PostsResponse {
 
 export default function Home() {
   const { data } = useSWR<PostsResponse>("/api/post");
-  console.log(data);
   return (
     <div>
-      <HeaderMenu />
+      <MainMenu />
       {data?.posts?.map((post) => (
         <Item key={post?.id} post={post} />
       ))}
-      <BottomMenu />
     </div>
   );
 }

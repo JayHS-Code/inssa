@@ -1,11 +1,13 @@
-import BottomMenu from "@/components/bottomMenu";
-import HeaderMenu from "@/components/headerMenu";
 import useUser from "@/libs/client/useUser";
 import { chatProfileImg } from "@/libs/utils/chatProfileImg";
 import { getTime } from "@/libs/utils/getTime";
 import { Chat, Room, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+  ssr: false,
+});
 
 type RoomType = Room & {
   chat: Chat[];
@@ -22,7 +24,7 @@ export default function Direct() {
   const { data } = useSWR<ResponseRooms>(`/api/direct`);
   return (
     <div className="mt-6">
-      <HeaderMenu />
+      <MainMenu />
       {data?.room?.map((room, idx) => (
         <div
           onClick={() => {
@@ -52,7 +54,6 @@ export default function Direct() {
           </div>
         </div>
       ))}
-      <BottomMenu />
     </div>
   );
 }

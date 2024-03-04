@@ -1,4 +1,3 @@
-import BottomMenu from "@/components/bottomMenu";
 import ProfilePreview from "@/components/profilePreview";
 import PostPreview from "@/components/postPreview";
 import { IconAtSymbol, IconDevicePhoneMobile } from "@/components/svg";
@@ -7,6 +6,10 @@ import { User } from "@prisma/client";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../../../components/mainMenu"), {
+  ssr: false,
+});
 
 type PostType = {
   id: number;
@@ -39,8 +42,9 @@ export default function Profile() {
   };
   return (
     <div>
+      <MainMenu />
       <div>
-        <div className="flex items-center space-x-16">
+        <div className="pt-16 flex items-center space-x-16">
           <ProfilePreview
             url={user?.avatar}
             cls={"w-32 h-32 bg-slate-500 rounded-full"}
@@ -95,7 +99,6 @@ export default function Profile() {
             ))
           : null}
       </div>
-      <BottomMenu />
     </div>
   );
 }

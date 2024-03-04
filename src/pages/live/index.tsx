@@ -1,7 +1,9 @@
-import BottomMenu from "@/components/bottomMenu";
-import HeaderMenu from "@/components/headerMenu";
 import { Live } from "@prisma/client";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+  ssr: false,
+});
 
 interface LivesResponse {
   ok: boolean;
@@ -12,7 +14,7 @@ export default function Lives() {
   const { data } = useSWR<LivesResponse>(`/api/live`);
   return (
     <div>
-      <HeaderMenu />
+      <MainMenu />
       <div className="divide-y-2 space-y-4">
         {data?.lives?.map((live) => (
           <div key={live?.id}>
@@ -25,7 +27,6 @@ export default function Lives() {
           </div>
         ))}
       </div>
-      <BottomMenu />
     </div>
   );
 }

@@ -7,7 +7,7 @@ interface TitleType {
 
 export default function HeaderMenu({ title }: TitleType) {
   return (
-    <div className="relative">
+    <div className="relative pb-8">
       <Head>
         <title>홈 - </title>
       </Head>
