@@ -31,6 +31,10 @@ export default function Profile() {
   const { data } = useSWR<profileType>(
     `${router?.query?.id ? `/api/users/profile/${router.query.id}` : null}`
   );
+  const handleLogout = async () => {
+    await fetch("/api/users/profile/logout");
+    router.push(`/account/signIn`);
+  };
   const indexProfile = () => {
     router.push(`/profile/${router?.query?.id}`);
   };
@@ -64,7 +68,12 @@ export default function Profile() {
               <Link href={`/profile/${user?.nickname}/edit`}>
                 <span className="text-sm text-blue-600">프로필 수정</span>
               </Link>
-              <span className="ml-5 text-sm text-red-500">로그아웃</span>
+              <span
+                onClick={handleLogout}
+                className="ml-5 text-sm text-red-500 cursor-pointer"
+              >
+                로그아웃
+              </span>
             </div>
           </div>
         </div>

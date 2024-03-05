@@ -28,10 +28,10 @@ export default function signIn() {
     useApi(data);
   };
   useEffect(() => {
-    if (data?.tokenAccess) {
+    if (data?.tokenAccess && !loading) {
       router.push("/");
     }
-  }, [data, router]);
+  }, [data, loading, router]);
   return (
     <div className="mt-16 px-4">
       <h3 className="text-3xl font-bold text-center">Inssa</h3>
