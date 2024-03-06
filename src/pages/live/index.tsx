@@ -15,7 +15,7 @@ export default function Lives() {
   return (
     <div>
       <MainMenu />
-      <div className="divide-y-2 space-y-4">
+      <div className="divide-y-2 space-y-4 mt-10">
         {data?.lives?.map((live) => (
           <div key={live?.id}>
             <div className="relative w-full rounded-md shadow-sm aspect-video overflow-hidden">

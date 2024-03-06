@@ -1,15 +1,22 @@
-import { Post } from "@prisma/client";
-import { IconComment, IconEllipsisVertical, IconHeart } from "./svg";
+import { Fav, Post } from "@prisma/client";
+import {
+  IconComment,
+  IconEllipsisVertical,
+  IconHeart,
+  IconSolidHeart,
+} from "./svg";
 import { useEffect, useState } from "react";
 import PostOptionModal from "./postOptionModal";
 import { useRouter } from "next/router";
 import ProfilePreview from "./profilePreview";
+import useFetch from "@/libs/client/useFetch";
 
 type PostWithUser = Post & {
   user: {
     avatar: string;
     nickname: string;
   };
+  Fav: Fav[];
 };
 
 interface PropsType {
@@ -22,17 +29,29 @@ export default function Item({ post }: PropsType) {
     fileType,
     url,
     description,
+    Fav,
     user: { nickname, avatar },
   } = post;
   const [imgUrl, setImgUrl] = useState<string[]>([]);
   const [showModal, setShowModal] = useState(false);
+  const [like, setLike] = useState(false);
   const router = useRouter();
+  const [useApi] = useFetch(`/api/post/${id}/fav`);
   useEffect(() => {
     const splitUrl = url.split(" ");
     setImgUrl(splitUrl);
   }, []);
+  useEffect(() => {
+    if (post && Fav.length) {
+      setLike(true);
+    }
+  }, []);
   const viewProfile = () => {
     router.push(`/profile/${nickname}`);
+  };
+  const onFavClick = () => {
+    setLike(!like);
+    useApi({});
   };
   const clickModal = () => setShowModal(!showModal);
   return (
@@ -70,7 +89,14 @@ export default function Item({ post }: PropsType) {
         />
       )}
       <div className="mt-3 flex gap-2">
-        <IconHeart />
+        <button
+          onClick={onFavClick}
+          className={`flex items-center justify-center ${
+            like ? "text-red-400  hover:text-red-500" : "hover:text-gray-500"
+          }`}
+        >
+          {like ? <IconSolidHeart /> : <IconHeart />}
+        </button>
         <IconComment />
       </div>
       <div className="pt-2 break-words break-all">{description}</div>

@@ -1,5 +1,5 @@
 import Item from "@/components/item";
-import { Post } from "@prisma/client";
+import { Fav, Post } from "@prisma/client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 const MainMenu = dynamic(() => import("../components/mainMenu"), {
@@ -11,6 +11,7 @@ interface PostsType extends Post {
     avatar: string;
     nickname: string;
   };
+  Fav: Fav[];
 }
 
 interface PostsResponse {
@@ -20,6 +21,7 @@ interface PostsResponse {
 
 export default function Home() {
   const { data } = useSWR<PostsResponse>("/api/post");
+  console.log(data);
   return (
     <div>
       <MainMenu />

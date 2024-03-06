@@ -13,6 +13,10 @@ import React, { useEffect, useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import io from "socket.io-client";
 import useSWR from "swr";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+  ssr: false,
+});
 
 type UserWithPost = User & {
   Post: {
@@ -108,13 +112,14 @@ export default function DirectRoom() {
 
   return (
     <div className="relative">
-      <div className="fixed inset-x-0 top-0 flex justify-center bg-white">
+      <MainMenu />
+      <div className="fixed inset-x-0 top-0 flex justify-center bg-white z-0">
         <div className="max-w-133 w-full h-10 px-3 flex justify-between items-center">
           <div onClick={() => router.back()} className="cursor-pointer">
             <IconArrowLeft />
           </div>
           <div>
-            {data?.room?.user[0]?.id === user?.id
+            {data?.room?.user[0]?.id !== user?.id
               ? data?.room?.user[0].nickname
               : data?.room?.user[1].nickname}
           </div>
@@ -123,7 +128,7 @@ export default function DirectRoom() {
           </div>
         </div>
       </div>
-      <div className="mt-5 -mb-6">
+      <div className="mt-15 -mb-6">
         {messages.length
           ? messages.map((message, idx) => (
               <>
@@ -131,6 +136,11 @@ export default function DirectRoom() {
                   key={idx}
                   message={message}
                   reversed={message?.user?.id === user?.id}
+                  deup={
+                    idx > 1 && messages[idx - 1]?.user?.id === message?.user?.id
+                      ? true
+                      : false
+                  }
                 />
               </>
             ))
@@ -154,7 +164,7 @@ export default function DirectRoom() {
           />
           <button
             ref={buttonRef}
-            className="absolute bg-black h-full flex items-center justify-center w-10 text-white"
+            className="absolute bg-orange-500 h-full flex items-center justify-center w-10 text-white"
           >
             <IconSolidPaperAirplane />
           </button>

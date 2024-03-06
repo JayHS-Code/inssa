@@ -72,10 +72,7 @@ export default function LiveDetail() {
         <h2 className="text-2xl font-bold text-gray-900">Live Chat</h2>
         <div className="py-10 pb-16 h-[50vh] overflow-y-scroll  px-4 space-y-4">
           {data?.live?.message?.map((message) => (
-            <Message
-              message={message.message}
-              reversed={message?.user?.id === user?.id}
-            />
+            <div>{message.message}</div>
           ))}
         </div>
         <div className="fixed py-2 bg-white  bottom-0 inset-x-0">

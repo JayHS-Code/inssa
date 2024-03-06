@@ -18,9 +18,10 @@ type MessageWithUser = Chat & {
 type MessageProps = {
   message: MessageWithUser;
   reversed?: boolean;
+  deup: boolean;
 };
 
-export default function Message({ message, reversed }: MessageProps) {
+export default function Message({ message, reversed, deup }: MessageProps) {
   const {
     message: chat,
     createdAt: dateTime,
@@ -34,7 +35,7 @@ export default function Message({ message, reversed }: MessageProps) {
         reversed ? "flex-row-reverse space-x-reverse" : ""
       }`}
     >
-      {!reversed ? (
+      {!reversed && !deup ? (
         <img
           onClick={clickModal}
           src={`${avatar ? avatar : "/empty.png"}`}
@@ -44,7 +45,11 @@ export default function Message({ message, reversed }: MessageProps) {
       {showProfile && (
         <ProfileModal user={message?.user} clickModal={clickModal} />
       )}
-      <div className="w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md">
+      <div
+        className={`w-1/2 text-sm text-gray-700 p-2 border border-gray-300 rounded-md ${
+          deup && !reversed ? "ml-10" : null
+        }`}
+      >
         <p>{chat}</p>
       </div>
       <div className="flex items-end text-[10px]">{getTime({ dateTime })}</div>

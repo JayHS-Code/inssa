@@ -21,6 +21,18 @@ export default function MainMenu() {
   const { user } = useUser();
   const router = useRouter();
   const [sideMenu, largeSide] = useWindowSize();
+  const [onlySide, setOnlySide] = useState(false);
+  const [useHeader, setUseHeader] = useState(true);
+
+  useEffect(() => {
+    if (router.pathname === "/direct/[id]") {
+      setOnlySide(true);
+    }
+
+    if (router.pathname === "/upload") {
+      setUseHeader(false);
+    }
+  }, [router]);
 
   const linkCls = `w-full px-3`;
   const btnCls = `h-10 rounded-md flex items-center gap-3 hover:bg-black/20 ${
@@ -31,7 +43,7 @@ export default function MainMenu() {
     <>
       {sideMenu ? (
         <div
-          className={`fixed top-0 left-0 h-full border-r-[1px] border-black flex flex-col items-start ${
+          className={`fixed top-0 left-0 h-full border-r-[1px] border-black flex flex-col items-start z-10 ${
             largeSide ? "w-72" : "w-16"
           }`}
         >
@@ -82,7 +94,7 @@ export default function MainMenu() {
             </Link>
             <Link className={linkCls} href="/direct">
               <div className={btnCls}>
-                {router?.asPath === "/direct" ? (
+                {router?.asPath.includes("/direct") ? (
                   <IconChatBubbleSolid cls={"w-7 h-7"} />
                 ) : (
                   <IconChatBubble cls={"w-7 h-7"} />
@@ -120,10 +132,14 @@ export default function MainMenu() {
           </div>
         </div>
       ) : (
-        <div>
-          <HeaderMenu />
-          <BottomMenu />
-        </div>
+        <>
+          {!onlySide ? (
+            <div>
+              {useHeader ? <HeaderMenu /> : null}
+              <BottomMenu />
+            </div>
+          ) : null}
+        </>
       )}
     </>
   );

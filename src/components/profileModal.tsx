@@ -1,6 +1,7 @@
 import { User } from "@prisma/client";
 import { useRouter } from "next/router";
 import PostPreview from "./postPreview";
+import { IconChatBubble, IconUserCircle, IconXMark } from "./svg";
 
 type UserWithPost = User & {
   Post: {
@@ -27,9 +28,15 @@ export default function ProfileModal({ clickModal, user }: propsType) {
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="w-full max-w-133 h-2/3 bg-gray-700 rounded-md"
+        className="w-full max-w-133 h-3/4 m-auto left-0 right-0 bg-gray-700 rounded-md overflow-y-auto"
       >
-        <div className="">
+        <div className="relative">
+          <div
+            onClick={clickModal}
+            className="absolute right-0 m-2 text-white cursor-pointer"
+          >
+            <IconXMark />
+          </div>
           <div className="py-10 flex flex-col items-center">
             <img
               src={`${user?.avatar ? user?.avatar : "/empty.png"}`}
@@ -40,14 +47,16 @@ export default function ProfileModal({ clickModal, user }: propsType) {
             <div className="mt-3 flex gap-8">
               <div
                 onClick={clickModal}
-                className="p-1 rounded-lg bg-white cursor-pointer"
+                className="flex justify-center items-center gap-2 w-36 p-2 rounded-lg bg-orange-500 text-white cursor-pointer"
               >
+                <IconChatBubble />
                 1:1 대화하기
               </div>
               <div
                 onClick={viewProfile}
-                className="p-1 rounded-lg bg-white cursor-pointer"
+                className="flex justify-center items-center gap-2 w-36 p-2 rounded-lg bg-orange-500 text-white cursor-pointer"
               >
+                <IconUserCircle />
                 프로필 보기
               </div>
             </div>

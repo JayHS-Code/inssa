@@ -1,6 +1,6 @@
 import Item from "@/components/item";
 import useUser from "@/libs/client/useUser";
-import { Post } from "@prisma/client";
+import { Fav, Post } from "@prisma/client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
 const MainMenu = dynamic(() => import("../../components/mainMenu"), {
@@ -12,6 +12,7 @@ interface VideoType extends Post {
     avatar: string;
     nickname: string;
   };
+  Fav: Fav[];
 }
 
 interface VideosResponse {

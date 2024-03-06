@@ -1,5 +1,6 @@
 import Error from "@/components/error";
 import {
+  IconArrowLeft,
   IconChevronLeft,
   IconChevronRight,
   IconPhoto,
@@ -12,6 +13,10 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useS3Upload } from "next-s3-upload";
 import useUser from "@/libs/client/useUser";
+import dynamic from "next/dynamic";
+const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+  ssr: false,
+});
 
 interface uploadForm {
   description?: string;
@@ -117,8 +122,6 @@ export default function Upload() {
 
     const s3FolderId = new Date().getTime().toString(36);
 
-    console.log(uploadFiles);
-
     const urls = await Promise.all(
       Array.from(uploadFiles).map(async (file) => {
         const { url } = await uploadToS3(file, {
@@ -143,6 +146,23 @@ export default function Upload() {
   };
   return (
     <div>
+      <MainMenu />
+      <div className="mb-5 inset-x-0 top-0 flex justify-center bg-white z-0">
+        <div className="max-w-133 w-full h-10 flex justify-between items-center">
+          <div
+            onClick={() => router.back()}
+            className="flex justify-center gap-5 cursor-pointer"
+          >
+            <IconArrowLeft />
+            <span>업로드</span>
+          </div>
+          <div>
+            {data?.room?.user[0]?.id === user?.id
+              ? data?.room?.user[0].nickname
+              : data?.room?.user[1].nickname}
+          </div>
+        </div>
+      </div>
       <form onSubmit={handleSubmit(onValid)}>
         {!previews.length ? (
           <div>

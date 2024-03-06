@@ -4,12 +4,18 @@ import { NextApiRequest, NextApiResponse } from "next";
 import { withApiSession } from "@/libs/server/withSession";
 
 async function handler(req: NextApiRequest, res: NextApiResponse) {
+  const { user } = req.session;
   const posts = await client.post.findMany({
     include: {
       user: {
         select: {
           avatar: true,
           nickname: true,
+        },
+      },
+      Fav: {
+        where: {
+          userId: user?.id,
         },
       },
     },
