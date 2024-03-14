@@ -5,7 +5,7 @@ import { Chat, Room, User } from "@prisma/client";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../../components/common/mainMenu"), {
   ssr: false,
 });
 

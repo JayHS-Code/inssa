@@ -1,5 +1,4 @@
-import Message from "@/components/message";
-import ProfileModal from "@/components/profileModal";
+import Message from "@/components/direct/message";
 import {
   IconArrowLeft,
   IconArrowRightStartOnRectAngle,
@@ -14,7 +13,7 @@ import { useForm } from "react-hook-form";
 import io from "socket.io-client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../../components/common/mainMenu"), {
   ssr: false,
 });
 

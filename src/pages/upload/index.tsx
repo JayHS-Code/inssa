@@ -1,4 +1,4 @@
-import Error from "@/components/error";
+import Error from "@/components/common/error";
 import {
   IconArrowLeft,
   IconChevronLeft,
@@ -14,7 +14,7 @@ import { useForm } from "react-hook-form";
 import { useS3Upload } from "next-s3-upload";
 import useUser from "@/libs/client/useUser";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../../components/common/mainMenu"), {
   ssr: false,
 });
 

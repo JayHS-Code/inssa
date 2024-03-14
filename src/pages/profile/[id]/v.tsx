@@ -1,4 +1,4 @@
-import ProfilePage from "@/components/profile";
+import ProfilePage from "@/components/profile/profile";
 
 export default function ProfileVideo() {
   return <ProfilePage />;

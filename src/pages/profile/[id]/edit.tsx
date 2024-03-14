@@ -1,4 +1,4 @@
-import ProfilePreview from "@/components/profilePreview";
+import ProfilePreview from "@/components/profile/profilePreview";
 import { IconExclamationCircle } from "@/components/svg";
 import useFetch from "@/libs/client/useFetch";
 import useUser from "@/libs/client/useUser";

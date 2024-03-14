@@ -1,7 +1,7 @@
 import { User } from "@prisma/client";
 import { useRouter } from "next/router";
-import PostPreview from "./postPreview";
-import { IconChatBubble, IconUserCircle, IconXMark } from "./svg";
+import PostPreview from "../postPreview";
+import { IconChatBubble, IconUserCircle, IconXMark } from "../svg";
 
 type UserWithPost = User & {
   Post: {

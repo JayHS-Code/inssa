@@ -4,11 +4,11 @@ import {
   IconEllipsisVertical,
   IconHeart,
   IconSolidHeart,
-} from "./svg";
+} from "../svg";
 import { useEffect, useState } from "react";
-import PostOptionModal from "./postOptionModal";
+import PostOptionModal from "../modal/postOptionModal";
 import { useRouter } from "next/router";
-import ProfilePreview from "./profilePreview";
+import ProfilePreview from "../profile/profilePreview";
 import useFetch from "@/libs/client/useFetch";
 
 type PostWithUser = Post & {

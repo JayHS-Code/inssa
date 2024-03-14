@@ -1,7 +1,7 @@
 import { Live } from "@prisma/client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../../components/common/mainMenu"), {
   ssr: false,
 });
 

@@ -1,4 +1,4 @@
-import { IconExclamationCircle } from "./svg";
+import { IconExclamationCircle } from "../svg";
 
 interface ErrProp {
   message: string;

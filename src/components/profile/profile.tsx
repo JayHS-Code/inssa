@@ -1,4 +1,4 @@
-import ProfilePreview from "@/components/profilePreview";
+import ProfilePreview from "@/components/profile/profilePreview";
 import PostPreview from "@/components/postPreview";
 import { IconAtSymbol, IconDevicePhoneMobile } from "@/components/svg";
 import useUser from "@/libs/client/useUser";
@@ -7,7 +7,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("./mainMenu"), {
+const MainMenu = dynamic(() => import("../common/mainMenu"), {
   ssr: false,
 });
 
@@ -47,8 +47,6 @@ export default function ProfilePage() {
   const favProfile = () => {
     router.push(`/profile/${router?.query?.id}/fav`);
   };
-
-  console.log(data);
   return (
     <div>
       <MainMenu />

@@ -1,5 +1,5 @@
 import PostPreview from "@/components/postPreview";
-import ProfilePreview from "@/components/profilePreview";
+import ProfilePreview from "@/components/profile/profilePreview";
 import {
   IconChevronLeft,
   IconChevronRight,

@@ -1,5 +1,5 @@
 import { getTime } from "@/libs/utils/getTime";
-import ProfileModal from "./profileModal";
+import ProfileModal from "../modal/profileModal";
 import { useState } from "react";
 import { Chat, User } from "@prisma/client";
 

@@ -1,9 +1,9 @@
-import Item from "@/components/item";
+import Item from "@/components/home/item";
 import useUser from "@/libs/client/useUser";
 import { Fav, Post } from "@prisma/client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../../components/common/mainMenu"), {
   ssr: false,
 });
 

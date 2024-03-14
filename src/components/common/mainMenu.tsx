@@ -10,7 +10,7 @@ import {
   IconPlus,
   IconVideo,
   IconVideoSolid,
-} from "./svg";
+} from "../svg";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import HeaderMenu from "./headerMenu";

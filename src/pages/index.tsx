@@ -1,8 +1,8 @@
-import Item from "@/components/item";
+import Item from "@/components/home/item";
 import { Fav, Post } from "@prisma/client";
 import useSWR from "swr";
 import dynamic from "next/dynamic";
-const MainMenu = dynamic(() => import("../components/mainMenu"), {
+const MainMenu = dynamic(() => import("../components/common/mainMenu"), {
   ssr: false,
 });
 
@@ -21,7 +21,6 @@ interface PostsResponse {
 
 export default function Home() {
   const { data } = useSWR<PostsResponse>("/api/post");
-  console.log(data);
   return (
     <div>
       <MainMenu />

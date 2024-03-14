@@ -9,7 +9,7 @@ import {
   IconHomeSolid,
   IconVideo,
   IconVideoSolid,
-} from "./svg";
+} from "../svg";
 import { useRouter } from "next/router";
 
 export default function BottomMenu() {

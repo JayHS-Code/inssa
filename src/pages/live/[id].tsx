@@ -1,9 +1,7 @@
-import Message from "@/components/message";
 import useFetch from "@/libs/client/useFetch";
 import useUser from "@/libs/client/useUser";
 import { Live } from "@prisma/client";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import useSWR from "swr";
 
