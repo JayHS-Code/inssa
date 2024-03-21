@@ -1,6 +1,8 @@
+import MainMenu from "@/components/common/mainMenu";
 import PostPreview from "@/components/postPreview";
 import ProfilePreview from "@/components/profile/profilePreview";
 import {
+  IconArrowLeft,
   IconChevronLeft,
   IconChevronRight,
   IconComment,
@@ -128,10 +130,20 @@ export default function PostDetail() {
       mutate();
     }
   }, [commentData, reset, mutate]);
-  console.log(relatedPost);
   return (
     <div>
-      <div>
+      <MainMenu />
+      <div className="fixed inset-x-0 top-0 flex justify-center bg-white z-10">
+        <div className="max-w-133 w-full h-10 flex justify-between items-center">
+          <div
+            onClick={() => router.back()}
+            className="flex justify-center gap-5 cursor-pointer"
+          >
+            <IconArrowLeft />
+          </div>
+        </div>
+      </div>
+      <div className="mt-14">
         <div>
           {data?.post?.fileType === "image" ? (
             <div className="relative flex flex-col justify-center bg-black group">

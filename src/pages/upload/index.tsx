@@ -156,11 +156,6 @@ export default function Upload() {
             <IconArrowLeft />
             <span>업로드</span>
           </div>
-          <div>
-            {data?.room?.user[0]?.id === user?.id
-              ? data?.room?.user[0].nickname
-              : data?.room?.user[1].nickname}
-          </div>
         </div>
       </div>
       <form onSubmit={handleSubmit(onValid)}>

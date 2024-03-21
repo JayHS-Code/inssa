@@ -46,6 +46,10 @@ export default function MainMenu() {
     if (router.pathname === "/upload") {
       setUseHeader(false);
     }
+
+    if (router.pathname === "/p/[id]") {
+      setUseHeader(false);
+    }
   }, [router]);
 
   useEffect(() => {

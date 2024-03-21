@@ -22,7 +22,7 @@ export default function HeaderMenu({ title }: TitleType) {
       <Head>
         <title>홈 - </title>
       </Head>
-      <div className="bg-white fixed px-4 h-14 w-full max-w-3xl top-0 left-2/4 -translate-x-2/4 flex justify-between items-center border-b z-0">
+      <div className="bg-white fixed px-4 h-14 w-full max-w-3xl top-0 left-2/4 -translate-x-2/4 flex justify-between items-center border-b z-20">
         <Link className="font-bold text-xl" href="/">
           inssa
         </Link>
